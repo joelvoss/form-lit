@@ -30,6 +30,11 @@ const req = css`
   font-weight: 400;
 `;
 
+const selectContainer = css`
+  position: relative;
+  margin-bottom: 3px;
+`;
+
 const select = css`
   width: 100%;
   font-size: 16px;
@@ -37,8 +42,29 @@ const select = css`
   border: 1px solid #dcdcdc;
   border-radius: 3px;
   box-shadow: inset 0 1px 2px #efefef;
-  padding: 0.25rem 0.5rem;
-  margin-bottom: 3px;
+  padding: 0.25rem 1.5rem 0.25rem 0.5rem;
+  appearance: none;
+
+  &[multiple] {
+    padding: 0.25rem 0.5rem;
+  }
+`;
+
+const chevron = css`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0.25rem;
+  pointer-events: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  & > svg {
+    width: 1rem;
+    height: 1rem;
+  }
 `;
 
 const error = css`
@@ -92,21 +118,30 @@ export const Select: React.FC<ISelectProps> = ({
         )}
       </label>
 
-      <select
-        id={name}
-        css={select}
-        multiple={multiple}
-        {...rest}
-        {...binds}
-        data-form-lit-select-select
-      >
-        {options &&
-          options.map(opt => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-      </select>
+      <div css={selectContainer} data-form-lit-select-selectcontainer>
+        <select
+          id={name}
+          css={select}
+          multiple={multiple}
+          {...rest}
+          {...binds}
+          data-form-lit-select-select
+        >
+          {options &&
+            options.map(opt => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+        </select>
+        {!multiple && (
+          <div css={chevron} data-form-lit-select-chevron>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path>
+            </svg>
+          </div>
+        )}
+      </div>
 
       {err && (
         <span css={error} data-form-lit-select-error>
