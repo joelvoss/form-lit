@@ -16,17 +16,17 @@
     "lint": "jvdx lint",
     "format": "jvdx format",
     "validate": "npm run format && npm run lint && npm run test",
-    "clean": "jvdx clean",
+    "clean": "jvdx clean example/dist example/node_modules example/yarn.lock",
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "@babel/runtime": "7.7.4",
+    "@babel/runtime": "7.7.5",
     "@emotion/core": "10.0.22",
     "immer": "5.0.0",
     "marked": "0.7.0"
   },
   "devDependencies": {
-    "jvdx": "0.0.2",
+    "jvdx": "0.0.3",
     "@types/jest": "24.0.23",
     "@types/marked": "0.7.2",
     "@types/react": "16.9.15",
