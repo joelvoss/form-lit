@@ -4,6 +4,14 @@
   "description": "Lit form library written in React",
   "author": "Joel Voss <mail@joelvoss.com>",
   "license": "MIT",
+  "homepage": "https://github.com/joelvoss/form-lit",
+  "bugs": {
+    "url": "https://github.com/joelvoss/form-lit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joelvoss/form-lit.git"
+  },
   "main": "dist/form-lit.cjs.js",
   "module": "dist/form-lit.esm.js",
   "typings": "dist/types/index.d.ts",
@@ -12,7 +20,7 @@
   ],
   "scripts": {
     "test": "jvdx test",
-    "build": "jvdx build rollup 'src/index.tsx'",
+    "build": "jvdx build rollup 'src/index.tsx' -f esm,cjs",
     "lint": "jvdx lint",
     "format": "jvdx format",
     "validate": "npm run format && npm run lint && npm run test",
@@ -20,16 +28,16 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "@babel/runtime": "7.7.5",
+    "@babel/runtime": "7.7.6",
     "@emotion/core": "10.0.22",
-    "immer": "5.0.0",
+    "immer": "5.0.1",
     "marked": "0.7.0"
   },
   "devDependencies": {
-    "jvdx": "0.0.3",
+    "jvdx": "0.0.6",
     "@types/jest": "24.0.23",
     "@types/marked": "0.7.2",
-    "@types/react": "16.9.15",
+    "@types/react": "16.9.16",
     "@types/react-dom": "16.9.4",
     "react": "16.12.0",
     "react-dom": "16.12.0"
