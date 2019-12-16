@@ -118,6 +118,7 @@ export interface IInputProps extends IBaseFieldProps {
   type: string;
   defaultValue?: string;
   placeholder?: string;
+  autocomplete?: string;
   min?: number;
   max?: number;
   step?: number;
