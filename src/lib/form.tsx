@@ -7,6 +7,7 @@ import {
   IFormHookState,
   TFormHookResult,
   IFormHookProps,
+  TValidatorReturn,
 } from '../types';
 import { normalizeFormData, ensureArray, requiredValidator } from '../utils';
 
@@ -27,109 +28,105 @@ const FormContext = React.createContext<IFormCtx>({
  * <Form /> provides our `FormContext` and submit/update functions to hook
  * into
  */
-export const Form: React.FC<IFormProps> = ({
-  onSubmit,
-  onChange,
-  className,
-  children,
-}) => {
-  const ref = React.useRef(null);
-  const formBag = React.useRef<{ [key: string]: any }>({});
-  const [state, setState] = React.useState<IFormState>({
-    error: null,
-    success: false,
-    isSubmitting: false,
-  });
-
-  // Handle the form submit
-  const handleSubmit = async (evt: React.SyntheticEvent) => {
-    evt.preventDefault();
-    setState(
-      produce(d => {
-        d.isSubmitting = true;
-      }),
-    );
-
-    // Touch each field and validate it
-    let error: string | null = null;
-    let fieldToFocus = null;
-    for (let key in formBag.current) {
-      fieldToFocus = formBag.current[key];
-      error = fieldToFocus.validate(
-        {
-          value: fieldToFocus.value,
-          checked: fieldToFocus.checked,
-          files: fieldToFocus.files,
-        },
-        true,
-      );
-
-      // If there was an error, break the loop
-      if (error) break;
-    }
-
-    // If there was an error, set it and focus the field that has the error
-    if (error) {
-      setState(
-        produce(d => {
-          d.error = error;
-          d.success = false;
-          d.isSubmitting = false;
-        }),
-      );
-      fieldToFocus.el.focus();
-    } else if (typeof onSubmit === 'function') {
-      // Normalize form data
-      const normalized = normalizeFormData(formBag.current);
-      await onSubmit(normalized);
-      setState(
-        produce(d => {
-          d.error = false;
-          d.success = true;
-          d.isSubmitting = false;
-        }),
-      );
-    }
-
-    return Promise.resolve();
-  };
-
-  // Handle a form reset.
-  const handleReset = (evt: React.SyntheticEvent) => {
-    evt.preventDefault();
-    for (let key in formBag.current) {
-      formBag.current[key].reset();
-    }
-    setState({
+export const Form: React.FC<IFormProps> = React.forwardRef(
+  ({ onSubmit, onChange, className, children }, ref) => {
+    const formBag = React.useRef<{ [key: string]: any }>({});
+    const [state, setState] = React.useState<IFormState>({
       error: null,
       success: false,
       isSubmitting: false,
     });
-  };
 
-  // Handle form field updates
-  const handleUpdate = (name: string, value: any) => {
-    if (typeof onChange === 'function') {
-      onChange(name, value);
-    }
-  };
+    // Handle the form submit
+    const handleSubmit = async (evt: React.SyntheticEvent) => {
+      evt.preventDefault();
+      setState(
+        produce(d => {
+          d.isSubmitting = true;
+        }),
+      );
 
-  return (
-    <form
-      className={className}
-      ref={ref}
-      onSubmit={handleSubmit}
-      onReset={handleReset}
-      data-form-lit-form
-    >
-      <FormContext.Provider
-        value={{ formBag: formBag.current, state, handleUpdate }}
+      // Touch each field and validate it
+      let error: TValidatorReturn = null;
+      let fieldToFocus = null;
+      for (let key in formBag.current) {
+        fieldToFocus = formBag.current[key];
+        error = fieldToFocus.validate(
+          {
+            value: fieldToFocus.value,
+            checked: fieldToFocus.checked,
+            files: fieldToFocus.files,
+          },
+          true,
+        );
+
+        // If there was an error, break the loop
+        if (error) break;
+      }
+
+      // If there was an error, set it and focus the field that has the error
+      if (error) {
+        setState(
+          produce(d => {
+            d.error = error;
+            d.success = false;
+            d.isSubmitting = false;
+          }),
+        );
+        fieldToFocus.el.focus();
+      } else if (typeof onSubmit === 'function') {
+        // Normalize form data
+        const normalized = normalizeFormData(formBag.current);
+        await onSubmit(normalized);
+        setState(
+          produce(d => {
+            d.error = false;
+            d.success = true;
+            d.isSubmitting = false;
+          }),
+        );
+      }
+
+      return Promise.resolve();
+    };
+
+    // Handle a form reset.
+    const handleReset = (evt: React.SyntheticEvent) => {
+      evt.preventDefault();
+      for (let key in formBag.current) {
+        formBag.current[key].reset();
+      }
+      setState({
+        error: null,
+        success: false,
+        isSubmitting: false,
+      });
+    };
+
+    // Handle form field updates
+    const handleUpdate = (name: string, value: any) => {
+      if (typeof onChange === 'function') {
+        onChange(name, value);
+      }
+    };
+
+    return (
+      <form
+        ref={ref}
+        className={className}
+        onSubmit={handleSubmit}
+        onReset={handleReset}
+        data-form-lit-form
       >
-        {children}
-      </FormContext.Provider>
-    </form>
-  );
-};
+        <FormContext.Provider
+          value={{ formBag: formBag.current, state, handleUpdate }}
+        >
+          {children}
+        </FormContext.Provider>
+      </form>
+    );
+  },
+);
 Form.displayName = `Form`;
 
 /**
@@ -209,7 +206,7 @@ export function useForm({
   const validate = React.useCallback(
     (value, forceTouched = false) => {
       // Call the validator and set error state
-      let error: string | null = null;
+      let error: TValidatorReturn = null;
 
       if (required) {
         error = requiredValidator(

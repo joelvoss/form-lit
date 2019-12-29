@@ -1,3 +1,5 @@
+import { MutableRefObject } from 'react';
+
 export type Modify<T, R> = Omit<T, keyof R> & R;
 
 export enum FormFieldTypes {
@@ -24,15 +26,18 @@ export type TValidatorValue = {
 
 export type TValidatorType = FormFieldTypes | string;
 
-export type TValidatorReturn = string | null;
+export type TValidatorReturn = string | null | undefined;
 
-export interface IRequiredValidator {
-  (value: TValidatorValue, type?: TValidatorType): TValidatorReturn;
+export interface IValidator {
+  (
+    value: TValidatorValue,
+    type?: TValidatorType,
+    formBag?: TFormBag,
+  ): TValidatorReturn;
 }
 
 // Form types & interfaces
-
-export type TFormBag = { [key: string]: any };
+export type TFormBag<T = any> = T;
 
 export interface IFormCtx {
   formBag: TFormBag;
@@ -45,6 +50,7 @@ export interface IFormProps {
   onChange?: (name: string, value: any) => void;
   className?: string;
   children?: any;
+  ref?: MutableRefObject<any>;
 }
 
 export interface IFormState {
@@ -61,11 +67,7 @@ export interface IFormHookProps {
   defaultChecked?: boolean;
   required?: boolean | string | any;
   multiple?: boolean;
-  validator?: (
-    value: TValidatorValue,
-    type: TValidatorType,
-    formBag: TFormBag,
-  ) => TValidatorReturn;
+  validator?: IValidator;
 }
 
 export interface IFormHookState {
@@ -105,11 +107,7 @@ interface IBaseFieldProps {
   name: string;
   label?: string;
   required?: any | boolean | string;
-  validator?: (
-    value: TValidatorValue,
-    type: TValidatorType,
-    formBag: TFormBag,
-  ) => string | null;
+  validator?: IValidator;
   children?: string | JSX.Element | (string | JSX.Element)[];
   className?: string;
 }

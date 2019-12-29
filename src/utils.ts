@@ -1,6 +1,6 @@
 import React from 'react';
 import marked from 'marked';
-import { IRequiredValidator, FormFieldTypes } from './types';
+import { IValidator, FormFieldTypes } from './types';
 
 /**
  * normalizeFormData normalizes the data of multiple form field types
@@ -83,7 +83,7 @@ export function isFalsy(value: any) {
  * requiredValidator is the default validator implementation that checks if
  * a given field is required or not.
  */
-export const requiredValidator: IRequiredValidator = (
+export const requiredValidator: IValidator = (
   { value, checked, files },
   type,
 ) => {
