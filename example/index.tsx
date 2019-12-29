@@ -1,5 +1,5 @@
 import 'react-app-polyfill/ie11';
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import ReactDOM from 'react-dom';
 import {
   FormFieldTypes,
@@ -12,15 +12,25 @@ import {
   Textarea,
   Select,
 } from '../src/index';
+import { TFormBag } from '../src/types';
 
 const Example = () => {
-  const onSubmit = (form: any) => {
+  const fRef = React.useRef<HTMLFormElement>();
+
+  const onSubmit = (form: TFormBag) => {
     console.log('onSubmit', form);
+  };
+
+  const customReset = (evt: SyntheticEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    if (fRef.current) {
+      fRef.current.reset();
+    }
   };
 
   return (
     <div className="App">
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit} ref={fRef}>
         {/* START <Input /> */}
         <div className="row">
           <Input
@@ -359,6 +369,7 @@ const Example = () => {
         <button type="submit">Submit</button>
         <button type="reset">Reset</button>
       </Form>
+      <button onClick={customReset}>Custom reset</button>
     </div>
   );
 };
