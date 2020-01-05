@@ -7,3 +7,5 @@ export { File } from './lib/file';
 export { Range } from './lib/range';
 export { Textarea } from './lib/textarea';
 export { Select } from './lib/select';
+
+export * from './types';
