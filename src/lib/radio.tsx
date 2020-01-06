@@ -10,6 +10,10 @@ const container = css`
   flex-direction: row;
   align-items: flex-start;
   margin-bottom: 1.3rem;
+
+  &[data-disabled='true'] * {
+    cursor: not-allowed;
+  }
 `;
 
 const textContainer = css`
@@ -38,15 +42,25 @@ const input = css`
   border-radius: 3px;
   border: 1px solid #dcdcdc;
   font-size: 16px;
-  box-shadow: inset 0 1px 2px #efefef;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  outline: none;
+  appearance: none;
+  width: 1em;
+  height: 1em;
+  margin: 2px 0.5ex;
+  border-radius: 100%;
 
-  &:focus,
-  &:active {
+  &:focus {
     border-color: rgb(59, 153, 253);
   }
 
   &[data-input-error='true'] {
     border-color: rgb(255, 89, 83);
+  }
+
+  &:checked {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 32 32'%3E%3Cpath fill='%232086FF' d='M0 0h32v32H0z'/%3E%3Ccircle cx='16' cy='17' r='7' fill='%231D74E5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23fff'/%3E%3C/svg%3E");
+    background-size: contain;
   }
 `;
 
@@ -74,6 +88,7 @@ export const Radio: React.FC<IRadioProps> = ({
   validator,
   children,
   className,
+  disabled,
   ...rest
 }) => {
   const [binds, err] = useForm({
@@ -85,13 +100,19 @@ export const Radio: React.FC<IRadioProps> = ({
   });
 
   return (
-    <div css={container} className={className} data-form-lit-radio-container>
+    <div
+      css={container}
+      className={className}
+      data-disabled={disabled}
+      data-form-lit-radio-container
+    >
       <input
         id={`${name}.${value}`}
         css={input}
         type="radio"
         data-input-error={!!err}
         required={required}
+        disabled={disabled}
         {...rest}
         {...binds}
         data-form-lit-radio-input

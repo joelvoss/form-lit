@@ -9,6 +9,10 @@ import { getRequiredElement } from '../utils';
 const container = css`
   display: block;
   margin-bottom: 1.3rem;
+
+  &[data-disabled='true'] * {
+    cursor: not-allowed;
+  }
 `;
 
 const title = css`
@@ -17,7 +21,6 @@ const title = css`
   align-items: center;
   font-weight: 600;
   font-size: 0.875rem;
-  text-transform: uppercase;
   margin-left: 3px;
   margin-bottom: 3px;
 `;
@@ -41,14 +44,18 @@ const input = css`
   font-family: inherit;
   box-shadow: inset 0 1px 2px #efefef;
   resize: vertical;
+  outline: none;
 
-  &:focus,
-  &:active {
+  &:focus {
     border-color: rgb(59, 153, 253);
   }
 
   &[data-input-error='true'] {
     border-color: rgb(255, 89, 83);
+  }
+
+  &:disabled {
+    background-color: rgb(250, 250, 250);
   }
 `;
 
@@ -82,12 +89,14 @@ const tabs = css`
   background-color: white;
   border: 1px solid transparent;
   appearance: none;
-  border-radius: 3px;
+  border-radius: 0;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
   cursor: pointer;
+  outline: none;
 
   &[data-tab-active='true'] {
     background-color: #efefef;
-    border-bottom-color: rgb(59, 153, 253);
   }
 `;
 
@@ -112,6 +121,7 @@ export const Textarea: React.FC<ITextareaProps> = ({
   validator,
   children,
   className,
+  disabled,
   rows = 3.5,
   ...rest
 }) => {
@@ -133,6 +143,7 @@ export const Textarea: React.FC<ITextareaProps> = ({
     name: string,
   ) => {
     evt.preventDefault();
+    if (disabled) return;
     // Save the current <textarea> height so both <textarea> and the preview
     // <div> share the same height.
     // We do this only when switching to the preview tab, otherwise the
@@ -148,6 +159,7 @@ export const Textarea: React.FC<ITextareaProps> = ({
       css={container}
       className={className}
       htmlFor={name}
+      data-disabled={disabled}
       data-form-lit-textarea-container
     >
       <span css={title}>
@@ -167,7 +179,7 @@ export const Textarea: React.FC<ITextareaProps> = ({
             data-tab-active={tab === 'text'}
             data-form-lit-textarea-tabs
           >
-            Text
+            Raw
           </button>
           <button
             css={tabs}
@@ -184,6 +196,7 @@ export const Textarea: React.FC<ITextareaProps> = ({
             id={name}
             css={input}
             required={required}
+            disabled={disabled}
             {...rest}
             {...binds}
             style={{ height: textContainerHeight || 'auto' }}

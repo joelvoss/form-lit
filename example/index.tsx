@@ -11,8 +11,8 @@ import {
   Range,
   Textarea,
   Select,
+  TFormBag,
 } from '../src/index';
-import { TFormBag } from '../src/types';
 
 const Example = () => {
   const fRef = React.useRef<HTMLFormElement>();
@@ -132,6 +132,23 @@ const Example = () => {
             name="email-input"
           />
         </div>
+        <div className="row">
+          <Input
+            className="col"
+            type={FormFieldTypes.Text}
+            label="Disabled input"
+            name="disabled-input"
+            disabled
+          />
+          <Input
+            className="col"
+            type={FormFieldTypes.Text}
+            label="Disabled input /w default value"
+            name="disabled-input-w-defaultvalue"
+            defaultValue="This is the defaultValue"
+            disabled
+          />
+        </div>
         {/* END <Input /> */}
 
         <hr />
@@ -163,6 +180,13 @@ const Example = () => {
             label="Checkbox w/ a custom value"
             name="checkbox-w-custom-value"
             value="visibility"
+          />
+        </div>
+        <div className="row">
+          <Checkbox
+            label="Disabled checkbox"
+            name="disabled-checkbox"
+            disabled
           />
         </div>
         {/* END <Checkbox /> */}
@@ -213,13 +237,24 @@ const Example = () => {
             defaultChecked
           />
         </div>
+        <div className="row">
+          <Radio label="Disabled radio" name="disabled-radia" disabled />
+        </div>
         {/* END <Radio /> */}
 
         <hr />
 
         {/* START <File /> */}
         <div className="row">
-          <File className="col" label="File Input" name="file-input" />
+          <File className="col" label="File input" name="file-input" />
+        </div>
+        <div className="row">
+          <File
+            className="col"
+            label="File input w/ mutliple"
+            name="file-input-w-multiple"
+            multiple
+          />
         </div>
         <div className="row">
           <File
@@ -231,6 +266,14 @@ const Example = () => {
             <br />
             <i>It can contain arbitrary html/react components</i>
           </File>
+        </div>
+        <div className="row">
+          <File
+            className="col"
+            label="Disabled file"
+            name="disabled-file"
+            disabled
+          />
         </div>
         {/* END <File /> */}
 
@@ -273,6 +316,27 @@ const Example = () => {
             defaultValue="33"
           />
         </div>
+        <div className="row">
+          <Range
+            className="col"
+            label="Disabled range input"
+            name="disabled-range-input"
+            disabled
+          />
+        </div>
+        <div className="row">
+          <Range
+            className="col"
+            label="Disabled range input w/ datalist"
+            name="disabled-range-input-w-datalist"
+            datalist={[
+              { value: 0, label: '0%' },
+              { value: 50, label: '50%' },
+              { value: 100, label: '100%' },
+            ]}
+            disabled
+          />
+        </div>
         {/* END <Range /> */}
 
         <hr />
@@ -306,6 +370,14 @@ const Example = () => {
             label="Text area w/ default value"
             name="textarea-w-defaultvalue"
             defaultValue="This is a **defaultValue**"
+          />
+        </div>
+        <div className="row">
+          <Textarea
+            className="col"
+            label="Disabled text area"
+            name="disabled-textarea"
+            disabled
           />
         </div>
         {/* END <Textarea /> */}
@@ -362,6 +434,29 @@ const Example = () => {
               { value: 'option-3', label: 'Option Three' },
               { value: 'option-4', label: 'Option Four' },
             ]}
+            multiple
+          />
+        </div>
+        <div className="row">
+          <Select
+            className="col"
+            label="Disabled select"
+            name="disabled-select"
+            options={[
+              { value: 'option-1', label: 'Option One' },
+              { value: 'option-2', label: 'Option Two' },
+            ]}
+            disabled
+          />
+          <Select
+            className="col"
+            label="Disabled select /w multiple"
+            name="disabled-select-w-multiple"
+            options={[
+              { value: 'option-1', label: 'Option One' },
+              { value: 'option-2', label: 'Option Two' },
+            ]}
+            disabled
             multiple
           />
         </div>

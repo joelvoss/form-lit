@@ -110,6 +110,7 @@ interface IBaseFieldProps {
   validator?: IValidator;
   children?: string | JSX.Element | (string | JSX.Element)[];
   className?: string;
+  disabled?: boolean;
 }
 
 export interface IInputProps extends IBaseFieldProps {
@@ -127,7 +128,9 @@ export interface ICheckboxProps extends IBaseFieldProps {
   defaultChecked?: boolean;
 }
 
-export interface IFileProps extends IBaseFieldProps {}
+export interface IFileProps extends IBaseFieldProps {
+  multiple?: boolean;
+}
 
 export interface IRadioProps extends IBaseFieldProps {
   value?: any;

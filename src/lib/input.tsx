@@ -11,12 +11,11 @@ const container = css`
 `;
 
 const title = css`
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   align-items: center;
   font-weight: 600;
   font-size: 0.875rem;
-  text-transform: uppercase;
   margin-left: 3px;
   margin-bottom: 3px;
 `;
@@ -37,15 +36,20 @@ const input = css`
   padding: 0.25rem 0.5rem;
   margin-bottom: 3px;
   font-size: 16px;
-  box-shadow: inset 0 1px 2px #efefef;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  outline: none;
 
-  &:focus,
-  &:active {
+  &:focus {
     border-color: rgb(59, 153, 253);
   }
 
   &[data-input-error='true'] {
     border-color: rgb(255, 89, 83);
+  }
+
+  &[disabled] {
+    background-color: rgb(250, 250, 250);
+    cursor: not-allowed;
   }
 `;
 

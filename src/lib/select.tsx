@@ -16,7 +16,6 @@ const title = css`
   align-items: center;
   font-weight: 600;
   font-size: 0.875rem;
-  text-transform: uppercase;
   margin-left: 3px;
   margin-bottom: 3px;
 `;
@@ -44,6 +43,11 @@ const select = css`
   box-shadow: inset 0 1px 2px #efefef;
   padding: 0.25rem 1.5rem 0.25rem 0.5rem;
   appearance: none;
+  outline: none;
+
+  &:focus {
+    border-color: rgb(59, 153, 253);
+  }
 
   &[multiple] {
     padding: 0.25rem 0.5rem;

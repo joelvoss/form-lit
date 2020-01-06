@@ -8,15 +8,18 @@ import { getRequiredElement } from '../utils';
 const container = css`
   display: block;
   margin-bottom: 1.3rem;
+
+  &[data-disabled='true'] * {
+    cursor: not-allowed;
+  }
 `;
 
 const title = css`
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   align-items: center;
   font-weight: 600;
   font-size: 0.875rem;
-  text-transform: uppercase;
   margin-left: 3px;
   margin-bottom: 3px;
 `;
@@ -68,6 +71,10 @@ const datalistLabel = css`
 
   &:hover {
     text-decoration: underline;
+  }
+
+  &[data-disabled='true']:hover {
+    text-decoration: none;
   }
 `;
 
@@ -129,6 +136,7 @@ export const Range: React.FC<IRangeProps> = ({
   children,
   className,
   datalist,
+  disabled,
   min = 0,
   max = 100,
   step = 1,
@@ -142,7 +150,7 @@ export const Range: React.FC<IRangeProps> = ({
   });
 
   const handleDataListClick = (value: number) => {
-    if (binds.ref.current) {
+    if (!disabled && binds.ref.current) {
       // Get the native input value setter from the window.HTMLInputElement
       // prototype
       const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
@@ -161,6 +169,7 @@ export const Range: React.FC<IRangeProps> = ({
       css={container}
       className={className}
       htmlFor={name}
+      data-disabled={disabled}
       data-form-lit-range-container
     >
       <span css={title} data-form-lit-range-title>
@@ -190,6 +199,7 @@ export const Range: React.FC<IRangeProps> = ({
                     {data.label && (
                       <span
                         css={datalistLabel}
+                        data-disabled={disabled}
                         data-form-lit-range-datalistlabel
                       >
                         {data.label}
@@ -211,6 +221,7 @@ export const Range: React.FC<IRangeProps> = ({
             css={range}
             type="range"
             required={required}
+            disabled={disabled}
             min={min}
             max={max}
             step={step}
@@ -227,6 +238,7 @@ export const Range: React.FC<IRangeProps> = ({
           min={min}
           max={max}
           step={step}
+          disabled={disabled}
           data-input-error={!!err}
           data-form-lit-range-input
         />

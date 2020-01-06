@@ -8,15 +8,18 @@ import { IFileProps } from '../types';
 const container = css`
   display: block;
   margin-bottom: 1.3rem;
+
+  &[data-disabled='true'] * {
+    cursor: not-allowed;
+  }
 `;
 
 const title = css`
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   align-items: center;
   font-weight: 600;
   font-size: 0.875rem;
-  text-transform: uppercase;
   margin-left: 3px;
   margin-bottom: 3px;
 `;
@@ -34,16 +37,22 @@ const dropzone = css`
   text-align: center;
   align-items: center;
   padding: 1rem 0.5rem;
-  border: 1px dashed rgb(59, 153, 253);
+  border: 1px solid #dcdcdc;
   border-radius: 3px;
   margin-bottom: 3px;
   font-size: 16px;
   box-shadow: inset 0 1px 2px #efefef;
   transition: background-color 0.1s ease-out;
+  outline: none;
   cursor: pointer;
 
+  &:hover,
   &[data-is-drag-active='true'] {
     background-color: rgba(59, 153, 253, 0.05);
+  }
+
+  &:focus {
+    border-color: rgb(59, 153, 253);
   }
 
   &[data-input-error='true'] {
@@ -54,25 +63,18 @@ const dropzone = css`
     padding: 0;
     font-size: 0.875em;
     pointer-events: none;
+    display: inline-block;
+    margin: 0 0.5em 0 0;
   }
-`;
 
-const dropzoneText = css`
-  display: inline-block;
-  margin: 0 0.5em 0 0;
-`;
+  &[data-disabled='true'] {
+    background-color: rgb(250, 250, 250);
+    border-color: #dcdcdc;
 
-const dropzoneButton = css`
-  display: inline-block;
-  appearance: none;
-  background-color: rgb(59, 153, 253);
-  color: white;
-  border-radius: 3px;
-  border: none;
-  margin: 0.5em 0;
-  padding: 0.25em 0.5em;
-  text-shadow: 0 0 1px #333;
-  font-size: 0.875em;
+    & p {
+      color: #545454;
+    }
+  }
 `;
 
 const input = css`
@@ -99,7 +101,7 @@ const fileListItem = css`
 const clearButton = css`
   display: inline-block;
   appearance: none;
-  background-color: #ddd;
+  background-color: #efefef;
   color: white;
   border-radius: 3px;
   border: none;
@@ -131,6 +133,7 @@ export const File: React.FC<IFileProps> = ({
   validator,
   children,
   className,
+  disabled,
   ...rest
 }) => {
   const [binds, err] = useForm({
@@ -146,29 +149,34 @@ export const File: React.FC<IFileProps> = ({
   /**
    * handleDragOver tries to set the dropEffect on the dataTransfer object
    */
-  const handleDragOver = React.useCallback(evt => {
-    evt.preventDefault();
-    evt.persist();
-    evt.stopPropagation();
+  const handleDragOver = React.useCallback(
+    evt => {
+      evt.preventDefault();
+      evt.stopPropagation();
+      if (disabled) return;
+      evt.persist();
 
-    if (evt.dataTransfer) {
-      try {
-        evt.dataTransfer.dropEffect = 'copy';
-      } catch (err) {
-        /* silence is golden */
+      if (evt.dataTransfer) {
+        try {
+          evt.dataTransfer.dropEffect = 'copy';
+        } catch (err) {
+          /* silence is golden */
+        }
       }
-    }
 
-    return false;
-  }, []);
+      return false;
+    },
+    [disabled],
+  );
 
   /**
    * handleDragEnter sets the isDragActive state to true
    */
   const handleDragEnter = (evt: React.DragEvent) => {
     evt.preventDefault();
-    evt.persist();
     evt.stopPropagation();
+    if (disabled) return;
+    evt.persist();
 
     setState(ps => ({ ...ps, isDragActive: true }));
   };
@@ -178,8 +186,9 @@ export const File: React.FC<IFileProps> = ({
    */
   const handleDragLeave = (evt: React.DragEvent) => {
     evt.preventDefault();
-    evt.persist();
     evt.stopPropagation();
+    if (disabled) return;
+    evt.persist();
 
     setState(ps => ({ ...ps, isDragActive: false }));
   };
@@ -189,8 +198,9 @@ export const File: React.FC<IFileProps> = ({
    */
   const handleDrop = (evt: React.DragEvent) => {
     evt.preventDefault();
-    evt.persist();
     evt.stopPropagation();
+    if (disabled) return;
+    evt.persist();
 
     setState(ps => ({ ...ps, isDragActive: false }));
 
@@ -207,11 +217,11 @@ export const File: React.FC<IFileProps> = ({
    * openFileDialog opens the browsers file dialog by dispatching a click event
    * on the actual file input
    */
-  const openFileDialog = () => {
-    if (binds.ref.current) {
-      binds.ref.current.click();
-    }
-  };
+  // const openFileDialog = () => {
+  //   if (binds.ref.current) {
+  //     binds.ref.current.click();
+  //   }
+  // };
 
   /**
    * clearFilelist clears the current filelist and resets this file input
@@ -230,6 +240,7 @@ export const File: React.FC<IFileProps> = ({
       css={container}
       className={className}
       htmlFor={name}
+      data-disabled={disabled}
       data-form-lit-file-container
     >
       <span css={title} data-form-lit-file-title>
@@ -246,21 +257,15 @@ export const File: React.FC<IFileProps> = ({
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
+        data-disabled={disabled}
         data-is-drag-active={state.isDragActive}
         data-input-error={!!err}
         data-form-lit-file-dropzone
+        tabIndex={disabled ? -1 : 0}
       >
-        <p css={dropzoneText} data-form-lit-file-dropzonetext>
-          Drag 'n' drop files here, or
+        <p data-form-lit-file-dropzonetext>
+          Drag 'n' drop files here, or click to choose files.
         </p>
-        <button
-          css={dropzoneButton}
-          type="button"
-          onClick={openFileDialog}
-          data-form-lit-file-dropzonebutton
-        >
-          click to choose files.
-        </button>
 
         {/* START Filelist */}
         {binds.files && binds.files.length !== 0 && (
@@ -293,7 +298,8 @@ export const File: React.FC<IFileProps> = ({
         id={name}
         css={input}
         type="file"
-        multiple
+        required={required}
+        disabled={disabled}
         {...rest}
         {...binds}
         data-form-lit-file-input
