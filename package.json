@@ -20,11 +20,11 @@
   ],
   "scripts": {
     "test": "jvdx test",
-    "build": "jvdx build rollup 'src/index.tsx' -f esm,cjs",
+    "build": "jvdx build rollup 'src/index.tsx' -f esm,cjs -c",
     "lint": "jvdx lint",
     "format": "jvdx format",
     "validate": "npm run format && npm run lint && npm run test",
-    "clean": "jvdx clean example/dist example/node_modules example/yarn.lock",
+    "clean": "jvdx clean dist example/dist example/node_modules example/yarn.lock",
     "prepublish": "npm run build"
   },
   "dependencies": {
