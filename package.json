@@ -28,13 +28,13 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "@babel/runtime": "7.7.7",
+    "@babel/runtime": "7.8.0",
     "@emotion/core": "10.0.27",
-    "immer": "5.1.0",
+    "immer": "5.2.1",
     "marked": "0.8.0"
   },
   "devDependencies": {
-    "jvdx": "0.0.10",
+    "jvdx": "0.1.1",
     "@types/jest": "24.0.25",
     "@types/marked": "0.7.2",
     "@types/react": "16.9.17",
