@@ -177,6 +177,22 @@ const Example = () => {
         </div>
         <div className="row">
           <Checkbox
+            label={
+              <span>
+                Checkbox with a custom label and sub-components, like{' '}
+                <a href="/" title="links">
+                  links
+                </a>{' '}
+                and some <br /> linebreaks to test <br />
+                our styling.
+              </span>
+            }
+            name="checkbox-input"
+            required
+          />
+        </div>
+        <div className="row">
+          <Checkbox
             label="Checkbox input w/ helptext"
             name="checkbox-w-helptext"
           >

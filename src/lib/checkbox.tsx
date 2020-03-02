@@ -23,7 +23,7 @@ const textContainer = css`
 const title = css`
   display: inline-flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   font-size: 0.875rem;
   margin-left: 3px;
   margin-bottom: 3px;
@@ -32,6 +32,7 @@ const title = css`
 const req = css`
   display: inline-block;
   color: rgb(255, 89, 83);
+  margin-top: 2px; /* corresponds to input margin */
   margin-left: 0.5em;
   font-size: 0.75rem;
   text-transform: initial;
@@ -42,12 +43,13 @@ const input = css`
   border-radius: 3px;
   border: 1px solid #dcdcdc;
   font-size: 16px;
+  line-height: 0;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
   outline: none;
   appearance: none;
   width: 1em;
   height: 1em;
-  margin: 2px 0.5ex;
+  margin: 2px;
 
   &:checked {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 32 32'%3E%3Cpath fill='%232086FF' d='M0 0h32v32H0z'/%3E%3Cpath fill='%231D74E6' d='M5.31 18.59l7.04 6.84 13.83-13.44-2.63-2.56-10.93 10.62-4.44-4.32-2.87 2.86z'/%3E%3Cpath fill='%23fff' d='M5.31 17.59l7.04 6.84 13.83-13.44-2.63-2.56-10.93 10.62-4.44-4.32-2.87 2.86z'/%3E%3C/svg%3E");

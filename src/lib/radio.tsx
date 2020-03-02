@@ -23,7 +23,7 @@ const textContainer = css`
 const title = css`
   display: inline-flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   font-size: 0.875rem;
   margin-left: 3px;
   margin-bottom: 3px;
@@ -32,6 +32,7 @@ const title = css`
 const req = css`
   display: inline-block;
   color: rgb(255, 89, 83);
+  margin-top: 2px; /* corresponds to input margin */
   margin-left: 0.5em;
   font-size: 0.75rem;
   text-transform: initial;
@@ -42,12 +43,13 @@ const input = css`
   border-radius: 3px;
   border: 1px solid #dcdcdc;
   font-size: 16px;
+  line-height: 0;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
   outline: none;
   appearance: none;
   width: 1em;
   height: 1em;
-  margin: 2px 0.5ex;
+  margin: 2px;
   border-radius: 100%;
 
   &:focus {
