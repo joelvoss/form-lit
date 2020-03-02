@@ -117,12 +117,7 @@ export function ensureArray(input: any | any[]) {
  * `required` input
  */
 export function getRequiredElement(required: boolean | string | any) {
-  if (
-    typeof required === 'string' ||
-    required instanceof Element ||
-    required instanceof HTMLDocument ||
-    React.isValidElement(required)
-  ) {
+  if (typeof required === 'string' || React.isValidElement(required)) {
     return required;
   } else {
     return `(Required)`;
