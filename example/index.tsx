@@ -80,6 +80,24 @@ const Example = () => {
           <Input
             className="col"
             type={FormFieldTypes.Text}
+            label="Required input w/ custom validator"
+            name="text-w-req-4"
+            required
+            validator={(value, name) => {
+              if (
+                value == null ||
+                (value.required && value.value.length === 0)
+              ) {
+                return `Custom validator: Field '${name}' is required.`;
+              }
+              return null;
+            }}
+          />
+        </div>
+        <div className="row">
+          <Input
+            className="col"
+            type={FormFieldTypes.Text}
             label="Input w/ default value"
             name="text-w-defaultvalue"
             defaultValue="This is the defaultValue"

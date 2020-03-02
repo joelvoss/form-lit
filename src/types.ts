@@ -22,6 +22,7 @@ export type TValidatorValue = {
   value: any;
   checked: boolean;
   files: FileList | null;
+  required?: boolean;
 };
 
 export type TValidatorType = FormFieldTypes | string;

@@ -208,17 +208,19 @@ export function useForm({
       // Call the validator and set error state
       let error: TValidatorReturn = null;
 
-      if (required) {
+      const val = { ...value, required };
+
+      if (typeof validator === 'function') {
+        error = validator(val, name, formBag);
+      }
+
+      if (required && typeof validator !== 'function') {
         error = requiredValidator(
           value,
           (ref.current as HTMLInputElement &
             HTMLTextAreaElement &
             HTMLSelectElement).type,
         );
-      }
-
-      if (typeof validator === 'function' && !error) {
-        error = validator(value, name, formBag);
       }
 
       if (error) {
