@@ -1,6 +1,6 @@
 {
   "name": "form-lit",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Lit form library written in React",
   "author": "Joel Voss <mail@joelvoss.com>",
   "license": "MIT",
