@@ -106,7 +106,7 @@ export type TFormHookResult = [
 
 interface IBaseFieldProps {
   name: string;
-  label?: string;
+  label?: string | JSX.Element | (string | JSX.Element)[];
   required?: any | boolean | string;
   validator?: IValidator;
   children?: string | JSX.Element | (string | JSX.Element)[];
