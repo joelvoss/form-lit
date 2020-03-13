@@ -12,8 +12,8 @@
     "type": "git",
     "url": "git+https://github.com/joelvoss/form-lit.git"
   },
-  "main": "dist/form-lit.cjs.js",
-  "module": "dist/form-lit.esm.js",
+  "main": "dist/cjs/index.cjs.js",
+  "module": "dist/esm/index.es.js",
   "typings": "dist/types/index.d.ts",
   "files": [
     "dist/"
@@ -28,17 +28,17 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "@babel/runtime": "7.8.4",
+    "@babel/runtime": "7.8.7",
     "@emotion/core": "10.0.28",
-    "immer": "5.3.6",
+    "immer": "6.0.1",
     "marked": "0.8.0"
   },
   "devDependencies": {
-    "@types/jest": "25.1.3",
-    "@types/marked": "0.7.2",
+    "@types/jest": "25.1.4",
+    "@types/marked": "0.7.3",
     "@types/react": "16.9.23",
     "@types/react-dom": "16.9.5",
-    "jvdx": "0.1.8",
+    "jvdx": "1.0.0",
     "react": "16.12.0",
     "react-dom": "16.12.0"
   },

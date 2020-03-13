@@ -1,3 +1,8 @@
+import { enableES5 } from 'immer';
+
+// Support for IE11
+enableES5();
+
 export { FormFieldTypes } from './types';
 export { Form } from './lib/form';
 export { Input } from './lib/input';
